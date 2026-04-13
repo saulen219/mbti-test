@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBTI Personality Test — Discover Your True Type in 5 Min</title>
+
+<!-- ═══ SEO & Open Graph (Twitter/Facebook share previews) ═══ -->
+<meta name="description" content="Take the most accurate free MBTI personality test. Discover your 16-type profile — trusted by 3M+ people worldwide.">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@YourHandle">
+<meta name="twitter:title" content="What's Your MBTI Type? 🧠 Find Out in 5 Minutes">
+<meta name="twitter:description" content="The most shared personality test of 2025. Are you an INTJ Architect or ENFP Champion? Take the free test now.">
+<meta name="twitter:image" content="https://yoursite.com/og-cover.jpg">
+
+<!-- Facebook / Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yoursite.com">
+<meta property="og:title" content="What's Your MBTI Personality Type?">
+<meta property="og:description" content="Discover your 16-type profile in 5 minutes. Trusted by 3M+ people. Free, accurate, and shareable.">
+<meta property="og:image" content="https://yoursite.com/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0b0c10;
+  --surface: #13141a;
+  --surface2: #1c1e27;
+  --border: #2a2d3a;
+  --text: #e8e6e0;
+  --muted: #6b6e7e;
+  --accent: #e8c84a;
+  --accent2: #4ae8b4;
+  --danger: #e84a6a;
+  --white: #ffffff;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BG GRID ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,200,74,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,200,74,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -30%;
+  left: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(ellipse, rgba(232,200,74,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active {
+  display: block;
+  animation: rise 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes rise {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════ HOME ═══════════════════════════════ */
+#screen-home { padding: 56px 0 60px; text-align: center; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(232,200,74,0.3);
+  padding: 7px 18px;
+  margin-bottom: 36px;
+}
+
+.eyebrow .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.4; transform:scale(0.6); }
+}
+
+h1.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 14vw, 120px);
+  line-height: 0.9;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+h1.hero-title .highlight {
+  color: var(--accent);
+  display: block;
+}
+
+.hero-sub {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(16px, 3vw, 22px);
+  color: var(--muted);
+  margin: 16px auto 48px;
+  max-width: 440px;
+  line-height: 1.6;
+}
+
+/* type grid */
+.type-mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 48px;
+}
+
+.type-tile {
+  padding: 12px 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.type-tile:hover { color: var(--accent); border-color: rgba(232,200,74,0.4); }
+.type-tile.lit { color: var(--accent); border-color: var(--accent); background: rgba(232,200,74,0.06); }
+
+.cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+.btn-start {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  padding: 18px 64px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-start::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.4s;
+}
+.btn-start:hover::before { transform: translateX(150%) skewX(-15deg); }
+.btn-start:hover { transform: scale(1.03); box-shadow: 0 0 40px rgba(232,200,74,0.35); }
+
+.cta-note { font-size: 12px; color: var(--muted); }
+
+.social-proof {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  border: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+.proof-item {
+  flex: 1;
+  padding: 24px 16px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.proof-item:last-child { border-right: none; }
+
+.proof-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: var(--accent);
+  display: block;
+  letter-spacing: 1px;
+}
+
+.proof-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+/* ═══════════════════════════════ QUIZ ═══════════════════════════════ */
+#screen-quiz { padding: 36px 0 60px; }
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.q-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+
+.q-dim-tag {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(232,200,74,0.3);
+  padding: 4px 12px;
+}
+
+.prog-track {
+  height: 2px;
+  background: var(--border);
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.4s ease;
+}
+
+.q-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(22px, 4.5vw, 34px);
+  line-height: 1.35;
+  color: var(--white);
+  margin-bottom: 40px;
+  min-height: 100px;
+}
+
+.options { display: flex; flex-direction: column; gap: 12px; }
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.opt:hover {
+  border-color: var(--accent);
+  background: rgba(232,200,74,0.07);
+  color: var(--white);
+  transform: translateX(4px);
+}
+
+.opt-key {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  color: var(--accent);
+  min-width: 20px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════ RESULT ═══════════════════════════════ */
+#screen-result { padding: 40px 0 60px; }
+
+.result-banner {
+  position: relative;
+  text-align: center;
+  padding: 52px 24px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.result-banner::before {
+  content: attr(data-type);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 200px;
+  color: rgba(232,200,74,0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: 4px;
+}
+
+.r-type-big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 18vw, 120px);
+  color: var(--accent);
+  letter-spacing: 4px;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.r-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--white);
+  margin-top: 8px;
+  position: relative; z-index:1;
+}
+
+.r-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-top: 6px;
+  position: relative; z-index:1;
+}
+
+/* trait bars */
+.traits { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+
+.trait-box {
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.trait-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.trait-track {
+  height: 4px;
+  background: var(--border);
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.trait-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1s ease; }
+.trait-pct { font-size: 11px; color: var(--accent); text-align: right; }
+
+/* desc */
+.section { margin-bottom: 28px; }
+.section-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after { content:''; flex:1; height:1px; background: var(--border); }
+
+.section p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(232,230,224,0.75);
+}
+
+.famous-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.famous-chip {
+  font-size: 12px;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.famous-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+/* share */
+.share-block {
+  border: 1px solid rgba(232,200,74,0.4);
+  background: rgba(232,200,74,0.04);
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.share-block h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.share-block p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.share-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+.sbtn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  padding: 11px 22px;
+  cursor: pointer;
+  border: 1.5px solid;
+  background: transparent;
+  transition: all 0.18s;
+}
+
+.sbtn.tw  { border-color:#1DA1F2; color:#1DA1F2; }
+.sbtn.tw:hover  { background:#1DA1F2; color:#000; }
+.sbtn.wa  { border-color:#25D366; color:#25D366; }
+.sbtn.wa:hover  { background:#25D366; color:#000; }
+.sbtn.fb  { border-color:#1877F2; color:#1877F2; }
+.sbtn.fb:hover  { background:#1877F2; color:#fff; }
+.sbtn.ig  { border-color:#E1306C; color:#E1306C; }
+.sbtn.ig:hover  { background:#E1306C; color:#fff; }
+.sbtn.cp  { border-color:var(--muted); color:var(--muted); }
+.sbtn.cp:hover  { border-color:var(--accent); color:var(--accent); }
+
+/* premium */
+.premium {
+  background: linear-gradient(135deg, #1a1610 0%, #0f1318 100%);
+  border: 1px solid rgba(232,200,74,0.25);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.premium::after {
+  content: 'PRO';
+  position: absolute;
+  bottom: -16px;
+  right: -8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 100px;
+  color: rgba(232,200,74,0.05);
+  pointer-events: none;
+}
+
+.prem-tag {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.premium h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.premium p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.prem-list { list-style: none; margin-bottom: 24px; }
+.prem-list li {
+  font-size: 13px;
+  color: rgba(232,230,224,0.7);
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  gap: 10px;
+}
+.prem-list li::before { content:'→'; color:var(--accent); flex-shrink:0; }
+
+.btn-unlock {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  padding: 15px 40px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-unlock:hover { background: #f0d86a; box-shadow: 0 0 30px rgba(232,200,74,0.4); }
+
+.price-note { font-size: 11px; color: var(--muted); margin-top: 10px; }
+
+.btn-again {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-again:hover { border-color: var(--text); color: var(--text); }
+
+/* toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--accent);
+  color: var(--bg);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  padding: 12px 28px;
+  z-index: 999;
+  transition: transform 0.3s ease;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media(max-width:480px){
+  .type-mosaic { grid-template-columns: repeat(4,1fr); }
+  .traits { grid-template-columns: 1fr; }
+  .share-row { gap:6px; }
+  .sbtn { font-size:12px; padding:9px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HOME ═══ -->
+<div id="screen-home" class="screen active">
+  <div class="container">
+    <div class="eyebrow"><span class="dot"></span> Personality Test 2025</div>
+    <h1 class="hero-title">KNOW<span class="highlight">YOURSELF</span></h1>
+    <p class="hero-sub">Discover your 16-type MBTI profile. Understand how you think, love, and lead.</p>
+
+    <div class="type-mosaic" id="type-mosaic">
+      <div class="type-tile lit">INTJ</div><div class="type-tile">INTP</div>
+      <div class="type-tile">ENTJ</div><div class="type-tile">ENTP</div>
+      <div class="type-tile">INFJ</div><div class="type-tile lit">INFP</div>
+      <div class="type-tile">ENFJ</div><div class="type-tile">ENFP</div>
+      <div class="type-tile">ISTJ</div><div class="type-tile">ISFJ</div>
+      <div class="type-tile lit">ESTJ</div><div class="type-tile">ESFJ</div>
+      <div class="type-tile">ISTP</div><div class="type-tile">ISFP</div>
+      <div class="type-tile">ESTP</div><div class="type-tile lit">ESFP</div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn-start" onclick="startQuiz()">TAKE THE FREE TEST →</button>
+      <span class="cta-note">5 min · 12 questions · No signup required</span>
+    </div>
+
+    <div class="social-proof">
+      <div class="proof-item"><span class="proof-num">3.1M+</span><div class="proof-label">Tests Taken</div></div>
+      <div class="proof-item"><span class="proof-num">94%</span><div class="proof-label">Say It's Accurate</div></div>
+      <div class="proof-item"><span class="proof-num">Free</span><div class="proof-label">Always</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="screen-quiz" class="screen">
+  <div class="container">
+    <div class="quiz-header">
+      <span class="q-num" id="q-num">01 / 12</span>
+      <span class="q-dim-tag" id="q-dim">Energy Source</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:8%"></div></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="q-opts"></div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div id="screen-result" class="screen">
+  <div class="container">
+
+    <div class="result-banner" id="r-banner" data-type="INFJ">
+      <div class="r-type-big" id="r-type">INFJ</div>
+      <div class="r-name" id="r-name">The Advocate</div>
+      <div class="r-tagline" id="r-tag">Rare, empathetic, and deeply principled</div>
+    </div>
+
+    <div class="traits" id="r-traits"></div>
+
+    <div class="section">
+      <div class="section-label">Personality Overview</div>
+      <p id="r-desc"></p>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Famous People Like You</div>
+      <div class="famous-chips" id="r-famous"></div>
+    </div>
+
+    <!-- SHARE -->
+    <div class="share-block">
+      <h3>SHARE YOUR TYPE</h3>
+      <p>Challenge your friends — are you personality compatible?<br>Tap a button to share your result instantly.</p>
+      <div class="share-row">
+        <button class="sbtn tw" onclick="shareTwitter()">𝕏 Twitter</button>
+        <button class="sbtn wa" onclick="shareWhatsApp()">WhatsApp</button>
+        <button class="sbtn fb" onclick="shareFacebook()">Facebook</button>
+        <button class="sbtn ig" onclick="shareInstagram()">Instagram</button>
+        <button class="sbtn cp" onclick="copyLink()">Copy Link</button>
+      </div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="premium">
+      <div class="prem-tag">· Unlock Your Full Report</div>
+      <h3>Deep Dive Report</h3>
+      <p>You've seen the surface. Your full report reveals career paths, relationship patterns, stress triggers, and a 30-day growth plan — all tailored to your exact type.</p>
+      <ul class="prem-list">
+        <li>Career match analysis across 30+ roles</li>
+        <li>Full 16×16 compatibility matrix</li>
+        <li>Communication style & blind spots</li>
+        <li>30-day personal growth action plan</li>
+        <li>Downloadable PDF report</li>
+      </ul>
+      <button class="btn-unlock" onclick="unlockPremium()">UNLOCK FULL REPORT →</button>
+      <div class="price-note">$4.99 · One-time · Instant access</div>
+    </div>
+
+    <button class="btn-again" onclick="restartQuiz()">↺ Retake the test</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════ JS ═══════════════ -->
+<script>
+const Qs = [
+  { dim:'Energy Source · E/I', text:'After a long social gathering, you usually feel…', a:'Energized — you could keep going all night', b:'Drained — you need alone time to recharge', type:'EI' },
+  { dim:'Energy Source · E/I', text:'In a new environment, your instinct is to…', a:'Introduce yourself and meet everyone', b:'Observe first, then engage selectively', type:'EI' },
+  { dim:'Information · S/N', text:'You prefer work that involves…', a:'Proven methods and concrete, step-by-step execution', b:'Exploring new ideas, even if the path is unclear', type:'SN' },
+  { dim:'Information · S/N', text:'When reading a story, you pay more attention to…', a:'Specific details: dates, places, events', b:'Themes, metaphors, and deeper meaning', type:'SN' },
+  { dim:'Decision-Making · T/F', text:'When a friend asks for advice, you first…', a:'Analyse the situation and give the most logical answer', b:'Acknowledge their feelings before offering solutions', type:'TF' },
+  { dim:'Decision-Making · T/F', text:'When making an important decision, you rely more on…', a:'Data, logic, and objective analysis', b:'Gut feeling and how it affects the people involved', type:'TF' },
+  { dim:'Lifestyle · J/P', text:'Your living and workspace is typically…', a:'Organised — everything has its place', b:'A bit chaotic — but you know where things are', type:'JP' },
+  { dim:'Lifestyle · J/P', text:'When planning a trip, you prefer to…', a:'Book everything in advance with a clear itinerary', b:'Set a rough direction and figure it out as you go', type:'JP' },
+  { dim:'Energy Source · E/I', text:'The fastest way for you to recharge is…', a:'Hanging out with friends or going to an event', b:'Being alone — reading, music, or quiet reflection', type:'EI' },
+  { dim:'Information · S/N', text:'You\'re more drawn to content that is…', a:'Practical, hands-on, and full of real examples', b:'Philosophical, theoretical, and future-focused', type:'SN' },
+  { dim:'Decision-Making · T/F', text:'When giving critical feedback to someone, you…', a:'State the issue directly — clarity matters most', b:'Choose words carefully to avoid hurting feelings', type:'TF' },
+  { dim:'Lifestyle · J/P', text:'When a deadline is approaching, you tend to…', a:'Finish early — last-minute stress is not for you', b:'Deliver just in time after a final sprint', type:'JP' },
+];
+
+const Types = {
+  INTJ:{ name:'The Architect',   tag:'Strategic, independent, and relentlessly driven',          desc:'INTJs are rare, confident thinkers who combine sharp strategic vision with ironclad willpower. They challenge authority, set impossibly high standards for themselves, and execute long-term plans with precision. Stubborn and fiercely independent, they are among the world\'s most capable problem-solvers.', famous:['Elon Musk','Friedrich Nietzsche','Stephen Hawking','Christopher Nolan'] },
+  INTP:{ name:'The Logician',    tag:'Curious, analytical, and endlessly inventive',             desc:'INTPs are driven by an insatiable thirst for knowledge and a love of abstract thought. They question everything, build mental models of the universe, and thrive in fields that reward intellectual rigor. They can seem detached, but inside they\'re running a thousand experiments at once.', famous:['Albert Einstein','Bill Gates','Charles Darwin','Linus Torvalds'] },
+  ENTJ:{ name:'The Commander',   tag:'Bold, decisive, and built to lead',                        desc:'ENTJs are natural-born leaders who see the world as a chessboard of opportunity. They are strategic, direct, and intolerant of inefficiency. With a rare combination of vision and execution ability, they rise quickly in any domain they choose — and they always choose to dominate.', famous:['Steve Jobs','Napoleon','Margaret Thatcher','Gordon Ramsay'] },
+  ENTP:{ name:'The Debater',     tag:'Quick-witted, creative, and intellectually fearless',      desc:'ENTPs love to play devil\'s advocate. They are brilliant at spotting loopholes, crafting arguments, and turning accepted wisdom on its head. Adaptable and resourceful, they thrive on challenge and get bored by routine — the best ENTPs channel this restless energy into genuine innovation.', famous:['Thomas Edison','Mark Twain','Benjamin Franklin','Sacha Baron Cohen'] },
+  INFJ:{ name:'The Advocate',    tag:'Rare, empathetic, and deeply principled',                  desc:'INFJs are the rarest of the 16 types — idealistic yet practical, visionary yet grounded. They have an uncanny ability to understand others\' inner worlds and are quietly driven by a profound sense of purpose. They don\'t just want to help — they want to change things at the root.', famous:['Martin Luther King Jr.','Gandhi','Nelson Mandela','Mother Teresa'] },
+  INFP:{ name:'The Mediator',    tag:'Poetic, empathetic, and fiercely idealistic',              desc:'INFPs live in a world of deep values and rich inner experience. They see beauty and potential everywhere, and are driven by a quiet but powerful desire to make things more meaningful. Sensitive yet resilient, they often channel their inner world into extraordinary creative work.', famous:['J.R.R. Tolkien','Audrey Hepburn','William Shakespeare','Björk'] },
+  ENFJ:{ name:'The Protagonist', tag:'Charismatic, inspiring, and endlessly caring',             desc:'ENFJs are natural leaders who lead with empathy rather than authority. They have an extraordinary ability to see the best in people and bring it out. Driven, warm, and deeply connected to others, they often become the emotional backbone of every team or community they join.', famous:['Barack Obama','Oprah Winfrey','Martin Luther King Jr.','Jennifer Lawrence'] },
+  ENFP:{ name:'The Campaigner',  tag:'Enthusiastic, creative, and wonderfully free-spirited',   desc:'ENFPs are true free spirits — bursting with ideas, enthusiasm, and a contagious love of life. They connect dots that others miss and bring people together effortlessly. While they can struggle with follow-through, when they\'re passionate, there\'s almost nothing they can\'t achieve.', famous:['Robin Williams','Quentin Tarantino','Walt Disney','Anne Frank'] },
+  ISTJ:{ name:'The Logistician', tag:'Reliable, disciplined, and quietly powerful',              desc:'ISTJs are the bedrock of every organisation. They are intensely dependable, detail-oriented, and committed to doing things the right way. They don\'t need applause — they need to know the job is done well. Their quiet consistency is what keeps the world running.', famous:['Warren Buffett','George Washington','Angela Merkel','Natalie Portman'] },
+  ISFJ:{ name:'The Defender',    tag:'Warm, diligent, and selflessly protective',                desc:'ISFJs are among the most giving personalities — warm, patient, and deeply attentive to the needs of those they care about. They remember birthdays, notice when something is off, and show up consistently. Their quiet strength is a gift to everyone around them.', famous:['David Beckham','Kate Middleton','Beyoncé','Vin Diesel'] },
+  ESTJ:{ name:'The Executive',   tag:'Organised, direct, and built to get things done',          desc:'ESTJs are the engines of execution. They value order, tradition, and accountability, and they apply these standards to themselves first. Direct, efficient, and tireless, they thrive in leadership roles where someone needs to make the hard calls and own the outcome.', famous:['Frank Sinatra','Emma Watson','Michelle Obama','John D. Rockefeller'] },
+  ESFJ:{ name:'The Consul',      tag:'Attentive, loyal, and socially gifted',                    desc:'ESFJs are the glue that holds communities together. They are warm, deeply attuned to others, and find real joy in making people feel seen and valued. They pour enormous energy into their relationships and have a rare talent for creating harmony wherever they go.', famous:['Taylor Swift','Bill Clinton','Jennifer Garner','Danny Glover'] },
+  ISTP:{ name:'The Virtuoso',    tag:'Bold, practical, and coolly self-reliant',                 desc:'ISTPs are masters of the physical world. They love to understand how things work by taking them apart — machines, systems, situations. In a crisis, they are ice-cold and razor-focused. They act rather than talk, and their results speak louder than any speech.', famous:['Michael Jordan','Tom Cruise','Clint Eastwood','Scarlett Johansson'] },
+  ISFP:{ name:'The Adventurer',  tag:'Sensitive, artistic, and gloriously spontaneous',          desc:'ISFPs have a rare gift for beauty — they experience the world through their senses more intensely than almost anyone. Gentle and unpretentious, they live fully in the present moment, and their openness to new experiences gives them an authenticity that others find deeply magnetic.', famous:['Michael Jackson','Marilyn Monroe','Britney Spears','David Bowie'] },
+  ESTP:{ name:'The Entrepreneur',tag:'Energetic, perceptive, and action-first',                  desc:'ESTPs are the ultimate opportunists — in the best sense. They are sharp, adaptable, and fearless, able to read a room in seconds and act before others have finished thinking. Drama-tolerant and excitement-seeking, they are most alive when the stakes are high.', famous:['Donald Trump','Madonna','Ernest Hemingway','Jack Nicholson'] },
+  ESFP:{ name:'The Entertainer', tag:'Spontaneous, vibrant, and impossible to ignore',           desc:'ESFPs are born performers. They find joy everywhere and spread it generously. Warm, funny, and tuned into the people around them, they live boldly in the moment and make every room more alive just by being in it.', famous:['Marilyn Monroe','Justin Bieber','Katy Perry','Eddie Murphy'] },
+};
+
+let scores = { E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0 };
+let qi = 0;
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startQuiz(){
+  scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}; qi=0;
+  show('screen-quiz'); renderQ();
+}
+
+function renderQ(){
+  const q=Qs[qi];
+  const pct=Math.round(((qi+1)/Qs.length)*100);
+  document.getElementById('q-num').textContent=(String(qi+1).padStart(2,'0'))+' / '+Qs.length;
+  document.getElementById('q-dim').textContent=q.dim.split('·')[0].trim();
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('q-text').textContent=q.text;
+  document.getElementById('q-opts').innerHTML=`
+    <button class="opt" onclick="ans('a')"><span class="opt-key">A</span><span>${q.a}</span></button>
+    <button class="opt" onclick="ans('b')"><span class="opt-key">B</span><span>${q.b}</span></button>
+  `;
+}
+
+function ans(c){
+  const q=Qs[qi]; const [p,n]=q.type.split('');
+  if(c==='a') scores[p]++; else scores[n]++;
+  qi++; if(qi<Qs.length) renderQ(); else showResult();
+}
+
+function showResult(){
+  const t=(scores.E>=scores.I?'E':'I')+(scores.S>=scores.N?'S':'N')+(scores.T>=scores.F?'T':'F')+(scores.J>=scores.P?'J':'P');
+  const d=Types[t]||Types['INFP'];
+
+  document.getElementById('r-banner').setAttribute('data-type',t);
+  document.getElementById('r-type').textContent=t;
+  document.getElementById('r-name').textContent=d.name;
+  document.getElementById('r-tag').textContent=d.tag;
+  document.getElementById('r-desc').textContent=d.desc;
+
+  const dims=[
+    {l:'E',r:'I',ls:scores.E,rs:scores.I},
+    {l:'S',r:'N',ls:scores.S,rs:scores.N},
+    {l:'T',r:'F',ls:scores.T,rs:scores.F},
+    {l:'J',r:'P',ls:scores.J,rs:scores.P},
+  ];
+  document.getElementById('r-traits').innerHTML=dims.map(d=>{
+    const tot=d.ls+d.rs||1, lp=Math.round(d.ls/tot*100), rp=100-lp;
+    const w=lp>=50?lp:rp;
+    return `<div class="trait-box">
+      <div class="trait-head"><span>${d.l}</span><span>${d.r}</span></div>
+      <div class="trait-track"><div class="trait-fill" style="width:${lp}%"></div></div>
+      <div class="trait-pct">${w}% ${lp>=50?d.l:d.r}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('r-famous').innerHTML=d.famous.map(f=>`<span class="famous-chip">${f}</span>`).join('');
+  window._res={type:t,name:d.name};
+  show('screen-result');
+}
+
+function shareText(){ const r=window._res||{}; return `I just found out I'm ${r.type} — ${r.name}! Take the free personality test and discover yours:`; }
+function siteUrl(){ return window.location.href; }
+
+function shareTwitter(){
+  const txt=encodeURIComponent(shareText()+'\n'+siteUrl()+'\n\n#MBTI #PersonalityTest #'+((window._res||{}).type||''));
+  window.open('https://twitter.com/intent/tweet?text='+txt,'_blank');
+}
+function shareWhatsApp(){
+  window.open('https://wa.me/?text='+encodeURIComponent(shareText()+'\n'+siteUrl()),'_blank');
+}
+function shareFacebook(){
+  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(siteUrl()),'_blank');
+}
+function shareInstagram(){
+  navigator.clipboard.writeText(shareText()+' '+siteUrl()).then(()=>toast('Caption copied! Paste it on Instagram ✓'));
+}
+function copyLink(){
+  navigator.clipboard.writeText(siteUrl()).then(()=>toast('Link copied ✓'));
+}
+function unlockPremium(){
+  toast('Redirecting to checkout...');
+  // TODO: window.location.href = 'https://buy.stripe.com/your-link';
+}
+function restartQuiz(){ startQuiz(); }
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2600);
+}
+</script>
+</body>
+</html>
